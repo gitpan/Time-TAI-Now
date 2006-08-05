@@ -1,3 +1,13 @@
+version 0.001; 2006-08-05
+
+  * in now_tai_flt(), when allowing for the rounding error in floating
+    point arithmetic, use the actual parameters of the floating point type
+    (from Data::Float) instead of assuming IEEE 754 double
+
+  * slight clarification to documentation of now_tai_flt()
+
+  * include description in README
+
 version 0.000; 2006-06-13
 
   * initial released version

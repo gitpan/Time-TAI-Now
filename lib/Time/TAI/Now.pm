@@ -40,11 +40,12 @@ package Time::TAI::Now;
 use warnings;
 use strict;
 
+use Data::Float 0.000 qw(significand_step float_parts mult_pow2);
 use Math::BigRat 0.10;
 use Time::UTC 0.000 qw(utc_to_tai);
 use Time::UTC::Now 0.001 qw(now_utc_rat now_utc_sna now_utc_flt);
 
-our $VERSION = "0.000";
+our $VERSION = "0.001";
 
 use base qw(Exporter);
 our @EXPORT_OK = qw(now_tai_rat now_tai_gsna now_tai_flt);
@@ -163,10 +164,10 @@ sub now_tai_gsna(;$) {
 =item now_tai_flt[(DEMAND_ACCURACY)]
 
 This performs exactly the same operation as C<now_tai_rat>, but returns
-all the results as Perl numbers.  This form of return value is very
-efficient and easy to manipulate.  However, its resolution is limited,
-rendering it already obsolete for high-precision applications at the
-time of writing.
+the results as Perl floating point numbers.  This form of return value
+is very efficient and easy to manipulate.  However, its resolution is
+limited, rendering it already obsolete for high-precision applications
+at the time of writing.
 
 The inaccuracy bound describes the actual time represented in the
 return value, not an internal value that was rounded to generate the
@@ -188,13 +189,13 @@ sub now_tai_flt(;$) {
 		# significand to line up with the seconds derived from
 		# the day number.  Not trusting floating-point rounding,
 		# presume the maximum possible additional error to be 1
-		# ulp of the final value.  That's 1 ulp of $flt_mn_s,
-		# unless that's close to an exponent increase, in which
-		# case it would be 2 ulp of the present value.  Assuming
-		# a 52-bit significand, this error can be easily
-		# (slightly over-) estimated by multiplying $flt_mn_s by
-		# 1.0001 * 2^-52.
-		$flt_add_bound = $flt_mn_s * 2.22067e-16;
+		# ulp of the final value.  That's 1 ulp of ($flt_mn_s +
+		# 86400) at the end of the day; possibly 0.5 ulp of that
+		# at the start of the day (if $flt_mn_s is just below an
+		# exponent boundary), but using the larger value all day
+		# will be fine.
+		my(undef, $mn_exp, undef) = float_parts($flt_mn_s + 86400.0);
+		$flt_add_bound = mult_pow2(significand_step, $mn_exp);
 		$flt_last_dayno = $dayno;
 	}
 	$bound += $flt_add_bound if defined $bound;

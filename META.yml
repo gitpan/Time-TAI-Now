@@ -1,10 +1,11 @@
 # http://module-build.sourceforge.net/META-spec.html
 #XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
 name:         Time-TAI-Now
-version:      0.000
+version:      0.001
 version_from: lib/Time/TAI/Now.pm
 installdirs:  site
 requires:
+    Data::Float:                   0.000
     Math::BigRat:                  0.10
     Time::UTC:                     0.000
     Time::UTC::Now:                0.001
