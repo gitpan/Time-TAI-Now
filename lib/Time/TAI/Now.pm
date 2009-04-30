@@ -40,14 +40,14 @@ package Time::TAI::Now;
 use warnings;
 use strict;
 
-use Data::Float 0.000 qw(significand_step float_parts mult_pow2);
+use Data::Float 0.008 qw(significand_step float_parts mult_pow2);
 use Math::BigRat 0.10;
-use Time::UTC 0.000 qw(utc_to_tai);
-use Time::UTC::Now 0.001 qw(now_utc_rat now_utc_sna now_utc_flt);
+use Time::UTC 0.005 qw(utc_to_tai);
+use Time::UTC::Now 0.007 qw(now_utc_rat now_utc_sna now_utc_flt);
 
-our $VERSION = "0.001";
+our $VERSION = "0.002";
 
-use base qw(Exporter);
+use parent "Exporter";
 our @EXPORT_OK = qw(now_tai_rat now_tai_gsna now_tai_flt);
 
 use constant BIGRAT_ZERO => Math::BigRat->new(0);
@@ -56,7 +56,7 @@ use constant BIGRAT_ZERO => Math::BigRat->new(0);
 
 =over
 
-=item now_tai_rat[(DEMAND_ACCURACY)]
+=item now_tai_rat([DEMAND_ACCURACY])
 
 Returns a list of two values.  The first value identifies a current TAI
 instant, in the form of a number of seconds since the epoch.  The second
@@ -108,7 +108,7 @@ sub now_tai_rat(;$) {
 	return ($rat_mn_s + $secs, $bound);
 }
 
-=item now_tai_gsna[(DEMAND_ACCURACY)]
+=item now_tai_gsna([DEMAND_ACCURACY])
 
 This performs exactly the same operation as C<now_tai_rat>, but
 returns the results in a different form.  The time since the epoch
@@ -161,7 +161,7 @@ sub now_tai_gsna(;$) {
 	return ([ $g, $s, @{$secs}[1, 2] ], $bound);
 }
 
-=item now_tai_flt[(DEMAND_ACCURACY)]
+=item now_tai_flt([DEMAND_ACCURACY])
 
 This performs exactly the same operation as C<now_tai_rat>, but returns
 the results as Perl floating point numbers.  This form of return value
@@ -215,7 +215,9 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2006 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2006, 2009 Andrew Main (Zefram) <zefram@fysh.org>
+
+=head1 LICENSE
 
 This module is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
