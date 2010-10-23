@@ -37,6 +37,7 @@ Naval Observatory.  This matches the convention used by C<Time::TAI>.
 
 package Time::TAI::Now;
 
+{ use 5.006; }
 use warnings;
 use strict;
 
@@ -45,7 +46,7 @@ use Math::BigRat 0.10;
 use Time::UTC 0.005 qw(utc_to_tai);
 use Time::UTC::Now 0.007 qw(now_utc_rat now_utc_sna now_utc_flt);
 
-our $VERSION = "0.002";
+our $VERSION = "0.003";
 
 use parent "Exporter";
 our @EXPORT_OK = qw(now_tai_rat now_tai_gsna now_tai_flt);
@@ -215,7 +216,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2006, 2009 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2006, 2009, 2010 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 
